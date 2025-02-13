@@ -1,0 +1,147 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Меню Вашего ресторана</title>
+    <link rel="stylesheet" href="mainmenu.css">
+</head>
+<body>
+
+<div class="Menu_types" data-name="Курица" data-price="350">
+    Курица
+    <p>Цена: 350 руб.</p>
+</div>
+<div class="Menu_types" data-name="Роллы" data-price="400">
+    Роллы
+    <p>Цена: 400 руб.</p>
+</div>
+<div class="Menu_types" data-name="Суши" data-price="500">
+    Суши
+    <p>Цена: 500 руб.</p>
+</div>
+
+<div id="cart">
+    <h2>Корзина</h2>
+    <ul id="cart-items"></ul>
+    <p>Итого: <span id="total-price">0</span> руб.</p>
+    <button id="send-order">Отправить заказ</button>
+</div>
+
+<script>
+    let cart = [];
+
+    // Функция для добавления продукта в корзину
+    function addToCart(productName, productPrice) {
+        cart.push({ name: productName, price: parseInt(productPrice) });
+        updateCart();
+        alert(`${productName} добавлен в корзину!`);
+    }
+
+    // Функция для обновления корзины
+    function updateCart() {
+        const cartItems = document.getElementById('cart-items');
+        const totalPriceElement = document.getElementById('total-price');
+
+        // Очищаем текущее содержимое корзины
+        cartItems.innerHTML = '';
+
+        let totalPrice = 0;
+
+        // Добавляем каждый продукт в корзину
+        cart.forEach(item => {
+            const li = document.createElement('li');
+            li.textContent = `${item.name} - ${item.price} руб.`;
+            cartItems.appendChild(li);
+            totalPrice += item.price;
+        });
+
+        // Обновляем итоговую цену
+        totalPriceElement.textContent = totalPrice;
+    }
+
+    // Функция для генерации случайного 6-значного кода
+    function generateOrderCode() {
+        return Math.floor(100000 + Math.random() * 900000); // Генерация числа от 100000 до 999999
+    }
+
+    // Функция для отправки заказа
+    function sendOrder() {
+        if (cart.length === 0) {
+            alert("Корзина пуста!");
+            return;
+        }
+
+        // Запрашиваем имя и фамилию пользователя
+        const fullName = prompt("Пожалуйста, введите ваши Фамилию и Имя:");
+        if (!fullName) {
+            alert("Имя и фамилия обязательны для оформления заказа.");
+            return;
+        }
+
+        // Генерируем случайный 6-значный код
+        const orderCode = generateOrderCode();
+
+        // Отправляем заказ в Telegram
+        sendOrderToTelegram(fullName, orderCode);
+
+        // Очищаем корзину после отправки заказа
+        cart = [];
+        updateCart();
+        alert(`Заказ успешно отправлен! Ваш номер заказа: ${orderCode}`);
+    }
+
+    // Функция для отправки заказа в Telegram
+    function sendOrderToTelegram(fullName, orderCode) {
+        let message = `Новый заказ от ${fullName}:\n`;
+        let totalPrice = 0;
+        cart.forEach(item => {
+            message += `${item.name} - ${item.price} руб.\n`;
+            totalPrice += item.price;
+        });
+        message += `Итого: ${totalPrice} руб.\nНомер заказа: ${orderCode}`;
+
+        // Токен вашего бота и chat_id
+        const botToken = "7725640690:AAEOP6dDRw2IxIB7XAeALgtHO5vTT2FSaL8"; // Замените на токен вашего бота
+        const chatId = "1205843084"; // Замените на ваш chat_id
+
+        // Отправляем сообщение через Telegram Bot API
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.ok) {
+                console.error("Ошибка при отправке заказа в Telegram:", data);
+            }
+        })
+        .catch((error) => {
+            console.error('Ошибка:', error);
+        });
+    }
+
+    // Обработчики событий
+    document.querySelectorAll('.Menu_types').forEach(item => {
+        item.addEventListener('click', () => {
+            const productName = item.getAttribute('data-name');
+            const productPrice = item.getAttribute('data-price');
+            addToCart(productName, productPrice);
+        });
+    });
+
+    document.getElementById('send-order').addEventListener('click', () => {
+        sendOrder();
+    });
+</script>
+
+</body>
+</html>
