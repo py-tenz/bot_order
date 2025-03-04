@@ -1,8 +1,7 @@
-<!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Меню Вашего ресторана</title>
     <link rel="stylesheet" href="mainmenu.css">
@@ -17,73 +16,44 @@
             background-image: url('https://img.icons8.com/ios-filled/50/000000/shopping-cart.png');
             background-size: cover;
             cursor: pointer;
-            z-index: 1000;
         }
         #cart {
             display: none; /* Скрываем корзину по умолчанию */
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            z-index: 1001;
         }
         #cart.open {
             display: block; /* Показываем корзину при открытии */
-        }
-        #overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-        }
-        #overlay.open {
-            display: block;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Меню Вашего ресторана</h1>
-</header>
-
 <!-- Значок корзины -->
 <div class="cart-icon" id="cart-icon"></div>
 
 <div id="wrapper" class="clearfix">
-    <section id="lefters">
-        <h2>Куриные блюда</h2>
+    <div id="lefters">
         <!-- Содержимое блока слева -->
         <div class="Menu_types" data-name="Курица" data-price="350">
-            <h3>Курица</h3>
+            Курица
             <p>Цена: 350 руб.</p>
         </div>
         <div class="Menu_types" data-name="Роллы" data-price="400">
-            <h3>Роллы</h3>
+            Роллы
             <p>Цена: 400 руб.</p>
         </div>
-    </section>
+    </div>
 
-    <section id="righters">
-        <h2>Восточные блюда</h2>
+    <div id="righters">
         <!-- Содержимое блока справа -->
         <div class="Menu_types" data-name="Суши" data-price="500">
-            <h3>Суши</h3>
+            Суши
             <p>Цена: 500 руб.</p>
         </div>
         <div class="Menu_types" data-name="Паста" data-price="450">
-            <h3>Паста</h3>
+            Паста
             <p>Цена: 450 руб.</p>
         </div>
-    </section>
+    </div>
 </div>
 
 <!-- Корзина -->
@@ -92,10 +62,7 @@
     <ul id="cart-items"></ul>
     <p>Итого: <span id="total-price">0</span> руб.</p>
     <button id="send-order">Отправить заказ</button>
-    <button id="close-cart">Закрыть</button>
 </div>
-
-<div id="overlay"></div>
 
 <script>
     let cart = [];
@@ -198,19 +165,13 @@
                 text: message,
             }),
         })
-        .then(response => {
-            if (!response.ok) {
-                console.error("Ошибка при отправке заказа в Telegram:", response);
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             if (!data.ok) {
                 console.error("Ошибка при отправке заказа в Telegram:", data);
             }
         })
-        .catch(error => {
+        .catch((error) => {
             console.error('Ошибка:', error);
         });
     }
@@ -231,17 +192,7 @@
     // Открытие корзины при клике на значок
     document.getElementById('cart-icon').addEventListener('click', () => {
         const cartDiv = document.getElementById('cart');
-        const overlay = document.getElementById('overlay');
-        cartDiv.classList.toggle('open');
-        overlay.classList.toggle('open');
-    });
-
-    // Закрытие корзины при клике на кнопку закрытия
-    document.getElementById('close-cart').addEventListener('click', () => {
-        const cartDiv = document.getElementById('cart');
-        const overlay = document.getElementById('overlay');
-        cartDiv.classList.remove('open');
-        overlay.classList.remove('open');
+        cartDiv.classList.toggle('open'); // Переключаем класс для отображения корзины
     });
 </script>
 
