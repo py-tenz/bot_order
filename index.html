@@ -1,34 +1,101 @@
 <!doctype html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Меню Вашего ресторана</title>
     <link rel="stylesheet" href="mainmenu.css">
+    <style>
+        /* Стили для значка корзины */
+        .cart-icon {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 40px;
+            height: 40px;
+            background-image: url('https://img.icons8.com/ios-filled/50/000000/shopping-cart.png');
+            background-size: cover;
+            cursor: pointer;
+            z-index: 1000;
+        }
+        #cart {
+            display: none; /* Скрываем корзину по умолчанию */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 1001;
+        }
+        #cart.open {
+            display: block; /* Показываем корзину при открытии */
+        }
+        #overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        #overlay.open {
+            display: block;
+        }
+    </style>
 </head>
 <body>
 
-<div class="Menu_types" data-name="Курица" data-price="350">
-    Курица
-    <p>Цена: 350 руб.</p>
-</div>
-<div class="Menu_types" data-name="Роллы" data-price="400">
-    Роллы
-    <p>Цена: 400 руб.</p>
-</div>
-<div class="Menu_types" data-name="Суши" data-price="500">
-    Суши
-    <p>Цена: 500 руб.</p>
+<header>
+    <h1>Меню Вашего ресторана</h1>
+</header>
+
+<!-- Значок корзины -->
+<div class="cart-icon" id="cart-icon"></div>
+
+<div id="wrapper" class="clearfix">
+    <section id="lefters">
+        <h2 id="kuritsa">Куриные блюда</h2>
+        <!-- Содержимое блока слева -->
+        <div class="Menu_types" data-name="Курица" data-price="350">
+            <h3>Курица</h3>
+            <p>Цена: 350 руб.</p>
+        </div>
+        <div class="Menu_types" data-name="Роллы" data-price="400">
+            <h3>Роллы</h3>
+            <p>Цена: 400 руб.</p>
+        </div>
+    </section>
+
+    <section id="righters">
+        <h2 id="vostok">Восточные блюда</h2>
+        <!-- Содержимое блока справа -->
+        <div class="Menu_types" data-name="Суши" data-price="500">
+            <h3>Суши</h3>
+            <p>Цена: 500 руб.</p>
+        </div>
+        <div class="Menu_types" data-name="Паста" data-price="450">
+            <h3>Паста</h3>
+            <p>Цена: 450 руб.</p>
+        </div>
+    </section>
 </div>
 
+<!-- Корзина -->
 <div id="cart">
     <h2>Корзина</h2>
     <ul id="cart-items"></ul>
     <p>Итого: <span id="total-price">0</span> руб.</p>
     <button id="send-order">Отправить заказ</button>
+    <button id="close-cart">Закрыть</button>
 </div>
+
+<div id="overlay"></div>
 
 <script>
     let cart = [];
@@ -50,16 +117,29 @@
 
         let totalPrice = 0;
 
-        // Добавляем каждый продукт в корзину
-        cart.forEach(item => {
+        // Добавляем каждый продукт в корзину с кнопкой удаления
+        cart.forEach((item, index) => {
             const li = document.createElement('li');
             li.textContent = `${item.name} - ${item.price} руб.`;
+
+            // Кнопка удаления
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Удалить';
+            deleteButton.onclick = () => removeItem(index);
+
+            li.appendChild(deleteButton);
             cartItems.appendChild(li);
             totalPrice += item.price;
         });
 
         // Обновляем итоговую цену
         totalPriceElement.textContent = totalPrice;
+    }
+
+    // Функция для удаления товара из корзины
+    function removeItem(index) {
+        cart.splice(index, 1); // Удаляем элемент по индексу
+        updateCart(); // Обновляем корзину
     }
 
     // Функция для генерации случайного 6-значного кода
@@ -104,8 +184,8 @@
         message += `Итого: ${totalPrice} руб.\nНомер заказа: ${orderCode}`;
 
         // Токен вашего бота и chat_id
-        const botToken = "7725640690:AAEOP6dDRw2IxIB7XAeALgtHO5vTT2FSaL8"; // Замените на токен вашего бота
-        const chatId = "1205843084"; // Замените на ваш chat_id
+        const botToken = "YOUR_BOT_TOKEN"; // Замените на токен вашего бота
+        const chatId = "YOUR_CHAT_ID"; // Замените на ваш chat_id
 
         // Отправляем сообщение через Telegram Bot API
         fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -140,6 +220,22 @@
 
     document.getElementById('send-order').addEventListener('click', () => {
         sendOrder();
+    });
+
+    // Открытие корзины при клике на значок
+    document.getElementById('cart-icon').addEventListener('click', () => {
+        const cartDiv = document.getElementById('cart');
+        const overlay = document.getElementById('overlay');
+        cartDiv.classList.toggle('open');
+        overlay.classList.toggle('open');
+    });
+
+    // Закрытие корзины при клике на кнопку закрытия
+    document.getElementById('close-cart').addEventListener('click', () => {
+        const cartDiv = document.getElementById('cart');
+        const overlay = document.getElementById('overlay');
+        cartDiv.classList.remove('open');
+        overlay.classList.remove('open');
     });
 </script>
 
