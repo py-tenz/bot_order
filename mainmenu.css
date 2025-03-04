@@ -26,7 +26,6 @@ header {
 h1, h2, h3 {
     margin: 0;
     padding: 10px 0;
-    color: black;
 }
 
 .Menu_types {
@@ -53,13 +52,7 @@ h1, h2, h3 {
     background-color: var(--secondary-color);
     border-color: var(--primary-color);
 }
-#kuritsa {
-  color: white
-}
 
-#vostok {
-  color: white
-}
 /* Обертка для блоков */
 #wrapper {
     display: flex;

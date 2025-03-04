@@ -60,7 +60,7 @@
 
 <div id="wrapper" class="clearfix">
     <section id="lefters">
-        <h2 id="kuritsa">Куриные блюда</h2>
+        <h2>Куриные блюда</h2>
         <!-- Содержимое блока слева -->
         <div class="Menu_types" data-name="Курица" data-price="350">
             <h3>Курица</h3>
@@ -73,7 +73,7 @@
     </section>
 
     <section id="righters">
-        <h2 id="vostok">Восточные блюда</h2>
+        <h2>Восточные блюда</h2>
         <!-- Содержимое блока справа -->
         <div class="Menu_types" data-name="Суши" data-price="500">
             <h3>Суши</h3>
@@ -184,8 +184,8 @@
         message += `Итого: ${totalPrice} руб.\nНомер заказа: ${orderCode}`;
 
         // Токен вашего бота и chat_id
-        const botToken = "YOUR_BOT_TOKEN"; // Замените на токен вашего бота
-        const chatId = "YOUR_CHAT_ID"; // Замените на ваш chat_id
+        const botToken = "7725640690:AAEOP6dDRw2IxIB7XAeALgtHO5vTT2FSaL8"; // Замените на токен вашего бота
+        const chatId = "1205843084"; // Замените на ваш chat_id
 
         // Отправляем сообщение через Telegram Bot API
         fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
@@ -198,13 +198,19 @@
                 text: message,
             }),
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                console.error("Ошибка при отправке заказа в Telegram:", response);
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             if (!data.ok) {
                 console.error("Ошибка при отправке заказа в Telegram:", data);
             }
         })
-        .catch((error) => {
+        .catch(error => {
             console.error('Ошибка:', error);
         });
     }
