@@ -165,17 +165,3 @@ body {
   box-shadow: 0 6px 12px rgba(255, 107, 107, 0.3);
 }
 
-@media (max-width: 768px) {
-  #wrapper {
-    flex-direction: column;
-  }
-
-  .Menu_types {
-    max-width: 100%;
-  }
-
-  #cart {
-    width: 90%;
-    right: 5%;
-  }
-}
