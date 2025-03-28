@@ -1,360 +1,200 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Меню Вашего Ресторана</title>
+    <title>Меню Вашего ресторана</title>
+    <link rel="stylesheet" href="mainmenu.css">
     <style>
-        /* Общие стили */
-        body {
-            background-image: url('https://i.pinimg.com/originals/db/a9/c5/dba9c50a56fe66e4734452566b3601a6.jpg');
-            background-position: center;
-            background-repeat: no-repeat;
-            background-size: cover;
-            font-family: 'Roboto', sans-serif;
-            margin: 0;
-            padding: 0;
-        }
-
-        h1 {
-            text-align: center;
-            color: white;
-            font-size: 2.5em;
-            margin-top: 20px;
-        }
-
-        /* Стили для меню */
-        #wrapper {
-            display: flex;
-            justify-content: space-between;
-            margin: 20px auto;
-            padding: 10px;
-            max-width: 1200px;
-            gap: 20px;
-        }
-
-        .Menu_types {
-            border: 2px solid #ccc;
-            border-radius: 10px;
-            padding: 15px;
-            margin: 10px auto;
-            background-color: #ffffff;
-            width: 200px;
-            height: 150px;
-            text-align: center;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .Menu_types:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-            background-color: #f0f0f0;
-            border-color: red;
-        }
-
-        .Menu_types img {
-            width: 100%;
-            height: auto;
-            border-radius: 10px;
-        }
-
-        .Menu_types button {
-            background-color: #009ACD;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .Menu_types button:hover {
-            background-color: #007B9E;
-        }
-
-        /* Стили для корзины */
-        #cart {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px auto;
-            width: 300px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        /* Стили для значка корзины */
+        .cart-icon {
             position: fixed;
-            bottom: 20px;
+            top: 20px;
             right: 20px;
-            z-index: 1000;
-            overflow-y: auto;
-            max-height: 80vh;
-            display: none;
-        }
-
-        #cart.open {
-            display: block;
-        }
-
-        #cart h2 {
-            margin-top: 0;
-            color: #333;
-            font-weight: bold;
-        }
-
-        #cart-items {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        #cart-items li {
-            padding: 5px 0;
-            border-bottom: 1px solid #ccc;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        #total-price {
-            font-weight: bold;
-            font-size: 1.2em;
-            color: #333;
-        }
-
-        #send-order {
-            background-color: #009ACD;
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 5px;
+            width: 40px;
+            height: 40px;
+            background-image: url('https://img.icons8.com/ios-filled/50/000000/shopping-cart.png');
+            background-size: cover;
             cursor: pointer;
-            font-weight: bold;
-            margin-top: 10px;
         }
-
-        #send-order:hover {
-            background-color: #007B9E;
+        #cart {
+            display: none; /* Скрываем корзину по умолчанию */
         }
-
-        
+        #cart.open {
+            display: block; /* Показываем корзину при открытии */
+        }
     </style>
 </head>
 <body>
-    <h1>Меню ресторана</h1>
 
-    <!-- Значок корзины -->
-    <div class="cart-icon" id="cart-icon">
-        🛒
-    </div>
+<!-- Значок корзины -->
+<div class="cart-icon" id="cart-icon"></div>
 
-    <!-- Меню -->
-    <div id="wrapper" class="clearfix">
-        <div id="lefters">
-            <div class="Menu_types" data-name="Курица" data-price="350">
-                <img src="https://via.placeholder.com/150x100?text=Курица" alt="Курица">
-                <h3>Курица</h3>
-                <p>Цена: 350 руб.</p>
-                <button onclick="addToCart(this.parentElement)">Добавить в корзину</button>
-            </div>
-            <div class="Menu_types" data-name="Роллы" data-price="400">
-                <img src="https://via.placeholder.com/150x100?text=Роллы" alt="Роллы">
-                <h3>Роллы</h3>
-                <p>Цена: 400 руб.</p>
-                <button onclick="addToCart(this.parentElement)">Добавить в корзину</button>
-            </div>
+<div id="wrapper" class="clearfix">
+    <div id="lefters">
+        <!-- Содержимое блока слева -->
+        <div class="Menu_types" data-name="Курица" data-price="350">
+            Курица
+            <p>Цена: 350 руб.</p>
         </div>
-
-        <div id="righters">
-            <div class="Menu_types" data-name="Суши" data-price="500">
-                <img src="https://via.placeholder.com/150x100?text=Суши" alt="Суши">
-                <h3>Суши</h3>
-                <p>Цена: 500 руб.</p>
-                <button onclick="addToCart(this.parentElement)">Добавить в корзину</button>
-            </div>
-            <div class="Menu_types" data-name="Паста" data-price="450">
-                <img src="https://via.placeholder.com/150x100?text=Паста" alt="Паста">
-                <h3>Паста</h3>
-                <p>Цена: 450 руб.</p>
-                <button onclick="addToCart(this.parentElement)">Добавить в корзину</button>
-            </div>
+        <div class="Menu_types" data-name="Роллы" data-price="400">
+            Роллы
+            <p>Цена: 400 руб.</p>
         </div>
     </div>
 
-    <!-- Корзина -->
-    <div id="cart">
-        <h2>Корзина</h2>
-        <ul id="cart-items"></ul>
-        <p>Итого: <span id="total-price">0</span> руб.</p>
-        <button id="send-order">Отправить заказ</button>
-        <button onclick="clearCart()">Очистить корзину</button>
+    <div id="righters">
+        <!-- Содержимое блока справа -->
+        <div class="Menu_types" data-name="Суши" data-price="500">
+            Суши
+            <p>Цена: 500 руб.</p>
+        </div>
+        <div class="Menu_types" data-name="Паста" data-price="450">
+            Паста
+            <p>Цена: 450 руб.</p>
+        </div>
     </div>
+</div>
 
-    <!-- Форма оформления заказа -->
-    <div id="order-form" style="display: none;">
-        <h2>Оформление заказа</h2>
-        <label for="name">Имя и фамилия:</label>
-        <input type="text" id="name" required>
+<!-- Корзина -->
+<div id="cart">
+    <h2>Корзина</h2>
+    <ul id="cart-items"></ul>
+    <p>Итого: <span id="total-price">0</span> руб.</p>
+    <button id="send-order">Отправить заказ</button>
+</div>
 
-        <label for="phone">Телефон:</label>
-        <input type="tel" id="phone" required>
+<script>
+    let cart = [];
 
-        <label for="address">Адрес:</label>
-        <input type="text" id="address" required>
+    // Функция для добавления продукта в корзину
+    function addToCart(productName, productPrice) {
+        cart.push({ name: productName, price: parseInt(productPrice) });
+        updateCart();
+        alert(`${productName} добавлен в корзину!`);
+    }
 
-        <label for="payment-method">Способ оплаты:</label>
-        <select id="payment-method">
-            <option value="cash">Наличные</option>
-            <option value="card">Банковская карта</option>
-        </select>
+    // Функция для обновления корзины
+    function updateCart() {
+        const cartItems = document.getElementById('cart-items');
+        const totalPriceElement = document.getElementById('total-price');
 
-        <button onclick="submitOrder()">Отправить заказ</button>
-    </div>
+        // Очищаем текущее содержимое корзины
+        cartItems.innerHTML = '';
 
-    <script>
-        let cart = [];
+        let totalPrice = 0;
 
-        // Функция для добавления продукта в корзину
-        function addToCart(productElement) {
-            const productName = productElement.getAttribute('data-name');
-            const productPrice = parseInt(productElement.getAttribute('data-price'));
+        // Добавляем каждый продукт в корзину с кнопкой удаления
+        cart.forEach((item, index) => {
+            const li = document.createElement('li');
+            li.textContent = `${item.name} - ${item.price} руб.`;
 
-            // Проверяем, есть ли товар уже в корзине
-            const existingItem = cart.find(item => item.name === productName);
-            if (existingItem) {
-                existingItem.quantity++;
-            } else {
-                cart.push({ name: productName, price: productPrice, quantity: 1 });
-            }
+            // Кнопка удаления
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Удалить';
+            deleteButton.onclick = () => removeItem(index);
 
-            updateCart();
-            alert(`${productName} добавлен в корзину!`);
-        }
-
-        // Функция для обновления корзины
-        function updateCart() {
-            const cartItems = document.getElementById('cart-items');
-            const totalPriceElement = document.getElementById('total-price');
-
-            cartItems.innerHTML = '';
-            let totalPrice = 0;
-
-            cart.forEach((item, index) => {
-                const li = document.createElement('li');
-                li.innerHTML = `
-                    ${item.name} - ${item.price} руб. x ${item.quantity} = ${item.price * item.quantity} руб.
-                    <button onclick="removeItem(${index})">Удалить</button>
-                    <button onclick="increaseQuantity(${index})">+</button>
-                    <button onclick="decreaseQuantity(${index})">-</button>
-                `;
-                cartItems.appendChild(li);
-                totalPrice += item.price * item.quantity;
-            });
-
-            totalPriceElement.textContent = totalPrice;
-        }
-
-        // Функции для изменения количества
-        function increaseQuantity(index) {
-            cart[index].quantity++;
-            updateCart();
-        }
-
-        function decreaseQuantity(index) {
-            if (cart[index].quantity > 1) {
-                cart[index].quantity--;
-            } else {
-                removeItem(index);
-            }
-            updateCart();
-        }
-
-        // Функция для удаления товара из корзины
-        function removeItem(index) {
-            cart.splice(index, 1);
-            updateCart();
-        }
-
-        // Функция очистки корзины
-        function clearCart() {
-            cart = [];
-            updateCart();
-            alert("Корзина очищена!");
-        }
-
-        // Функция отправки заказа
-        function submitOrder() {
-            if (cart.length === 0) {
-                alert("Корзина пуста!");
-                return;
-            }
-
-            const fullName = document.getElementById('name').value;
-            const phone = document.getElementById('phone').value;
-            const address = document.getElementById('address').value;
-            const paymentMethod = document.getElementById('payment-method').value;
-
-            if (!fullName || !phone || !address) {
-                alert("Заполните все поля!");
-                return;
-            }
-
-            const orderCode = Math.floor(100000 + Math.random() * 900000);
-
-            // Отправка заказа в Telegram
-            sendOrderToTelegram(fullName, phone, address, paymentMethod, orderCode);
-
-            // Очищаем корзину после отправки заказа
-            cart = [];
-            updateCart();
-            alert(`Заказ успешно отправлен! Ваш номер заказа: ${orderCode}`);
-        }
-
-        // Функция отправки заказа в Telegram
-        function sendOrderToTelegram(fullName, phone, address, paymentMethod, orderCode) {
-            let message = `Новый заказ от ${fullName}:\nТелефон: ${phone}\nАдрес: ${address}\nСпособ оплаты: ${paymentMethod}\n\n`;
-            let totalPrice = 0;
-
-            cart.forEach(item => {
-                message += `${item.name} - ${item.price} руб. x ${item.quantity} = ${item.price * item.quantity} руб.\n`;
-                totalPrice += item.price * item.quantity;
-            });
-
-            message += `\nИтого: ${totalPrice} руб.\nНомер заказа: ${orderCode}`;
-
-            const botToken = "7781582767:AAEQG3g51dGUIlp5kN45gGbX-CeV5s5yemU"; // Замените на токен вашего бота
-            const chatId = "1205843084"; // Замените на ваш chat_id
-
-            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: message,
-                }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (!data.ok) {
-                    console.error("Ошибка при отправке заказа в Telegram:", data);
-                }
-            })
-            .catch((error) => {
-                console.error('Ошибка:', error);
-            });
-        }
-
-        // Обработчик кликов по значку корзины
-        document.getElementById('cart-icon').addEventListener('click', () => {
-            const cartDiv = document.getElementById('cart');
-            cartDiv.classList.toggle('open');
+            li.appendChild(deleteButton);
+            cartItems.appendChild(li);
+            totalPrice += item.price;
         });
-    </script>
+
+        // Обновляем итоговую цену
+        totalPriceElement.textContent = totalPrice;
+    }
+
+    // Функция для удаления товара из корзины
+    function removeItem(index) {
+        cart.splice(index, 1); // Удаляем элемент по индексу
+        updateCart(); // Обновляем корзину
+    }
+
+    // Функция для генерации случайного 6-значного кода
+    function generateOrderCode() {
+        return Math.floor(100000 + Math.random() * 900000); // Генерация числа от 100000 до 999999
+    }
+
+    // Функция для отправки заказа
+    function sendOrder() {
+        if (cart.length === 0) {
+            alert("Корзина пуста!");
+            return;
+        }
+
+        // Запрашиваем имя и фамилию пользователя
+        const fullName = prompt("Пожалуйста, введите ваши Фамилию и Имя:");
+        if (!fullName) {
+            alert("Имя и фамилия обязательны для оформления заказа.");
+            return;
+        }
+
+        // Генерируем случайный 6-значный код
+        const orderCode = generateOrderCode();
+
+        // Отправляем заказ в Telegram
+        sendOrderToTelegram(fullName, orderCode);
+
+        // Очищаем корзину после отправки заказа
+        cart = [];
+        updateCart();
+        alert(`Заказ успешно отправлен! Ваш номер заказа: ${orderCode}`);
+    }
+
+    // Функция для отправки заказа в Telegram
+    function sendOrderToTelegram(fullName, orderCode) {
+        let message = `Новый заказ от ${fullName}:\n`;
+        let totalPrice = 0;
+        cart.forEach(item => {
+            message += `${item.name} - ${item.price} руб.\n`;
+            totalPrice += item.price;
+        });
+        message += `Итого: ${totalPrice} руб.\nНомер заказа: ${orderCode}`;
+
+        // Токен вашего бота и chat_id
+        const botToken = "7781582767:AAEQG3g51dGUIlp5kN45gGbX-CeV5s5yemU"; // Замените на токен вашего бота
+        const chatId = "1205843084"; // Замените на ваш chat_id
+
+        // Отправляем сообщение через Telegram Bot API
+        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                chat_id: chatId,
+                text: message,
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (!data.ok) {
+                console.error("Ошибка при отправке заказа в Telegram:", data);
+            }
+        })
+        .catch((error) => {
+            console.error('Ошибка:', error);
+        });
+    }
+
+    // Обработчики событий
+    document.querySelectorAll('.Menu_types').forEach(item => {
+        item.addEventListener('click', () => {
+            const productName = item.getAttribute('data-name');
+            const productPrice = item.getAttribute('data-price');
+            addToCart(productName, productPrice);
+        });
+    });
+
+    document.getElementById('send-order').addEventListener('click', () => {
+        sendOrder();
+    });
+
+    // Открытие корзины при клике на значок
+    document.getElementById('cart-icon').addEventListener('click', () => {
+        const cartDiv = document.getElementById('cart');
+        cartDiv.classList.toggle('open'); // Переключаем класс для отображения корзины
+    });
+</script>
+
 </body>
 </html>
