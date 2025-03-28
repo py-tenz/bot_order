@@ -3,52 +3,47 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  font-family: Arial, sans-serif;
+  font-family: 'Roboto', sans-serif;
   margin: 0;
   padding: 0;
+}
+
+/* Общая структура */
+#wrapper {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px auto;
+  padding: 10px;
+  max-width: 1200px;
+  gap: 20px; /* Расстояние между блоками */
 }
 
 .Menu_types {
   border: 2px solid #ccc;
   border-radius: 10px;
   padding: 15px;
-  margin: 10px auto; /* Центрирование блока */
+  margin: 10px auto;
   background-color: #ffffff;
   width: 200px;
-  height: 40px;
+  height: 100px; /* Увеличение высоты для лучшей презентации */
   text-align: center;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   cursor: pointer;
-  float: inherit;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .Menu_types:hover {
   transform: translateY(-5px);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   background-color: #f0f0f0;
-  border-color: red
+  border-color: red;
 }
 
-/* Обертка для блоков */
-#wrapper {
-  display: flex;
-  justify-content: space-between; /* Расположить блоки по краям */
-  margin: 20px auto;
-  padding: 10px;
-  max-width: 1200px;
-}
-
-/* Блок слева */
-#lefters {
-  width: 35%; /* Ширина блока слева */
-}
-
-/* Блок справа */
-#righters {
-  width: 35%; /* Ширина блока справа */
-}
-
+/* Корзина */
 #cart {
   background-color: white;
   padding: 20px;
@@ -56,14 +51,18 @@ body {
   margin: 20px auto;
   width: 300px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: 1000;
+  overflow-y: auto; /* Добавляем прокрутку при необходимости */
+  max-height: 80vh;
 }
 
 #cart h2 {
   margin-top: 0;
-}
-
-#cart-icon {
-  color: white
+  color: #333;
+  font-weight: bold;
 }
 
 #cart-items {
@@ -74,10 +73,15 @@ body {
 #cart-items li {
   padding: 5px 0;
   border-bottom: 1px solid #ccc;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 #total-price {
   font-weight: bold;
+  font-size: 1.2em;
+  color: #333;
 }
 
 #send-order {
@@ -93,4 +97,16 @@ body {
 
 #send-order:hover {
   background-color: #007B9E;
+}
+
+  .Menu_types {
+    width: 100%;
+    max-width: 300px;
+  }
+
+  #cart {
+    width: 90%;
+    bottom: 10px;
+    right: 10px;
+  }
 }
