@@ -3,9 +3,10 @@ body {
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
-  font-family: 'Roboto', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   margin: 0;
-  padding: 0;
+  padding: 20px;
+  color: #333;
 }
 
 /* Общая структура */
@@ -15,98 +16,166 @@ body {
   margin: 20px auto;
   padding: 10px;
   max-width: 1200px;
-  gap: 20px; /* Расстояние между блоками */
+  gap: 20px;
+}
+
+#lefters, #righters {
+  flex: 1;
+  min-width: 0;
 }
 
 .Menu_types {
-  border: 2px solid #ccc;
-  border-radius: 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 12px;
   padding: 15px;
   margin: 10px auto;
-  background-color: #ffffff;
-  width: 200px;
-  height: 100px; /* Увеличение высоты для лучшей презентации */
+  background-color: rgba(255, 255, 255, 0.9);
+  width: 100%;
+  max-width: 300px;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
   cursor: pointer;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: space-between;
+  min-height: 150px;
 }
 
 .Menu_types:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  background-color: #f0f0f0;
-  border-color: red;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+  background-color: white;
+  border-color: #FF6B6B;
+}
+
+.Menu_types h3 {
+  margin: 0 0 10px 0;
+  color: #2F4858;
+  font-size: 18px;
+}
+
+.Menu_types p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #666;
+}
+
+.Menu_types .price {
+  font-weight: bold;
+  color: #FF6B6B;
+  font-size: 16px;
+  margin-top: 10px;
 }
 
 /* Корзина */
-#cart {
-  background-color: white;
-  padding: 20px;
-  border-radius: 10px;
-  margin: 20px auto;
-  width: 300px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  z-index: 1000;
-  overflow-y: auto; /* Добавляем прокрутку при необходимости */
-  max-height: 80vh;
-}
-
 #cart h2 {
   margin-top: 0;
-  color: #333;
-  font-weight: bold;
+  color: #2F4858;
+  text-align: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.cart-content {
+  max-height: 400px;
+  overflow-y: auto;
+  margin-bottom: 15px;
 }
 
 #cart-items {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
 #cart-items li {
-  padding: 5px 0;
-  border-bottom: 1px solid #ccc;
+  padding: 10px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.cart-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-#total-price {
+.item-name {
+  flex: 1;
+  text-align: left;
+  font-size: 14px;
+}
+
+.item-price {
   font-weight: bold;
-  font-size: 1.2em;
-  color: #333;
+  margin: 0 10px;
+  color: #2F4858;
+}
+
+.remove-item {
+  background: #FF6B6B;
+  color: white;
+  border: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.remove-item:hover {
+  background: #FF5252;
+  transform: scale(1.1);
+}
+
+.cart-total {
+  text-align: right;
+  padding-top: 15px;
+  border-top: 1px solid #e0e0e0;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#total-price {
+  color: #FF6B6B;
 }
 
 #send-order {
-  background-color: #009ACD;
+  background: linear-gradient(to right, #FF6B6B, #FF8E53);
   color: white;
   border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
+  padding: 12px 25px;
+  border-radius: 30px;
   cursor: pointer;
   font-weight: bold;
-  margin-top: 10px;
+  margin-top: 15px;
+  width: 100%;
+  font-size: 16px;
+  transition: all 0.3s;
+  box-shadow: 0 4px 6px rgba(255, 107, 107, 0.2);
 }
 
 #send-order:hover {
-  background-color: #007B9E;
+  background: linear-gradient(to right, #FF5252, #FF7B3D);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 12px rgba(255, 107, 107, 0.3);
 }
 
+@media (max-width: 768px) {
+  #wrapper {
+    flex-direction: column;
+  }
+
   .Menu_types {
-    width: 100%;
-    max-width: 300px;
+    max-width: 100%;
   }
 
   #cart {
     width: 90%;
-    bottom: 10px;
-    right: 10px;
+    right: 5%;
   }
 }
