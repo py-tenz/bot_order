@@ -1,13 +1,72 @@
-<html lang="en">
+<!DOCTYPE html>
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Меню Вашего ресторана</title>
-    <link rel="stylesheet" href="mainmenu.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Меню ресторана</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
-        /* Стили для значка корзины */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Montserrat', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background-color: #f8f8f8;
+            color: #333;
+            padding: 10px;
+            padding-bottom: 80px;
+            touch-action: manipulation;
+        }
+        
+        #wrapper {
+            display: flex;
+            justify-content: space-between;
+            margin: 20px auto;
+            padding: 10px;
+            max-width: 1200px;
+            gap: 20px;
+        }
+        
+        #lefters, #righters {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .Menu_types {
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            padding: 15px;
+            margin: 10px auto;
+            background-color: white;
+            width: 100%;
+            max-width: 300px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+        
+        .Menu_types:active {
+            transform: scale(0.98);
+            background-color: #f0f0f0;
+        }
+        
+        .Menu_types h3 {
+            margin: 0 0 5px 0;
+            color: #2F4858;
+            font-size: 18px;
+        }
+        
+        .Menu_types .price {
+            font-weight: bold;
+            color: #FF6B6B;
+            font-size: 16px;
+        }
+        
         .cart-icon {
             position: fixed;
             top: 20px;
@@ -22,19 +81,18 @@
             cursor: pointer;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
             z-index: 1001;
-            transition: all 0.3s ease;
         }
-
-        .cart-icon:hover {
-            transform: scale(1.1);
-            background-color: #FF5252;
+        
+        .cart-icon:active {
+            transform: scale(0.95);
         }
-
+        
         .cart-icon::before {
             content: "🛒";
             font-size: 24px;
+            color: white;
         }
-
+        
         .cart-count {
             position: absolute;
             top: -5px;
@@ -50,29 +108,129 @@
             font-size: 12px;
             font-weight: bold;
         }
-
+        
         #cart {
             display: none;
             position: fixed;
             top: 80px;
             right: 20px;
-            width: 350px;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            width: 90%;
+            max-width: 350px;
+            background: white;
             border-radius: 15px;
             box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
             padding: 20px;
             z-index: 1000;
             border: 1px solid #e0e0e0;
         }
-
+        
         #cart.open {
             display: block;
-            animation: fadeIn 0.3s ease;
         }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
+        
+        #cart h2 {
+            margin-top: 0;
+            color: #2F4858;
+            text-align: center;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .cart-content {
+            max-height: 60vh;
+            overflow-y: auto;
+            margin-bottom: 15px;
+        }
+        
+        #cart-items {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+        
+        #cart-items li {
+            padding: 10px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .item-name {
+            flex: 1;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .item-price {
+            font-weight: bold;
+            margin: 0 10px;
+            color: #2F4858;
+        }
+        
+        .remove-item {
+            background: #FF6B6B;
+            color: white;
+            border: none;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .remove-item:active {
+            background: #FF5252;
+        }
+        
+        .cart-total {
+            text-align: right;
+            padding-top: 15px;
+            border-top: 1px solid #e0e0e0;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        
+        #total-price {
+            color: #FF6B6B;
+        }
+        
+        #send-order {
+            background: #FF6B6B;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: bold;
+            margin-top: 15px;
+            width: 100%;
+            font-size: 16px;
+        }
+        
+        #send-order:active {
+            background: #FF5252;
+        }
+        
+        @media (max-width: 768px) {
+            #wrapper {
+                flex-direction: column;
+            }
+            
+            .Menu_types {
+                max-width: 100%;
+            }
+            
+            #cart {
+                width: calc(100% - 40px);
+                right: 20px;
+            }
         }
     </style>
 </head>
@@ -146,19 +304,22 @@
 </div>
 
 <script>
+    // Инициализация Telegram WebApp
+    const tg = window.Telegram?.WebApp;
+    if (tg) {
+        tg.expand(); // Раскрываем на весь экран
+        tg.enableClosingConfirmation(); // Включаем подтверждение закрытия
+    }
+
     let cart = [];
 
     // Функция для добавления продукта в корзину
     function addToCart(productName, productPrice) {
         cart.push({ name: productName, price: parseInt(productPrice) });
         updateCart();
-
-        // Анимация добавления в корзину
-        const cartIcon = document.getElementById('cart-icon');
-        cartIcon.style.transform = 'scale(1.2)';
-        setTimeout(() => {
-            cartIcon.style.transform = 'scale(1)';
-        }, 300);
+        
+        // Вибрация для feedback
+        if (navigator.vibrate) navigator.vibrate(50);
     }
 
     // Функция для обновления корзины
@@ -169,7 +330,7 @@
 
         // Обновляем счетчик товаров
         cartCount.textContent = cart.length;
-        cartCount.style.display = cart.length > 0 ? 'block' : 'none';
+        cartCount.style.display = cart.length > 0 ? 'flex' : 'none';
 
         // Очищаем текущее содержимое корзины
         cartItems.innerHTML = '';
@@ -207,11 +368,7 @@
     function removeItem(index) {
         cart.splice(index, 1);
         updateCart();
-    }
-
-    // Функция для генерации случайного 6-значного кода
-    function generateOrderCode() {
-        return Math.floor(100000 + Math.random() * 900000);
+        if (navigator.vibrate) navigator.vibrate(50);
     }
 
     // Функция для отправки заказа
@@ -221,40 +378,43 @@
             return;
         }
 
-        // Запрашиваем имя и фамилию пользователя
-        const fullName = prompt("Пожалуйста, введите ваши Фамилию и Имя:");
-        if (!fullName) {
-            alert("Имя и фамилия обязательны для оформления заказа.");
-            return;
+        if (tg) {
+            // Если в Telegram - отправляем данные через WebApp
+            const orderData = {
+                items: cart,
+                total: cart.reduce((sum, item) => sum + item.price, 0),
+                timestamp: new Date().toISOString()
+            };
+            
+            tg.sendData(JSON.stringify(orderData));
+            tg.close();
+        } else {
+            // Стандартная логика для браузера
+            const fullName = prompt("Пожалуйста, введите ваши Фамилию и Имя:");
+            if (!fullName) {
+                alert("Имя и фамилия обязательны для оформления заказа.");
+                return;
+            }
+
+            sendOrderToTelegram(fullName);
+            cart = [];
+            updateCart();
         }
-
-        // Генерируем случайный 6-значный код
-        const orderCode = generateOrderCode();
-
-        // Отправляем заказ в Telegram
-        sendOrderToTelegram(fullName, orderCode);
-
-        // Очищаем корзину после отправки заказа
-        cart = [];
-        updateCart();
-        alert(`Заказ успешно отправлен! Ваш номер заказа: ${orderCode}`);
     }
 
-    // Функция для отправки заказа в Telegram
-    function sendOrderToTelegram(fullName, orderCode) {
+    // Функция для отправки заказа в Telegram (для браузера)
+    function sendOrderToTelegram(fullName) {
         let message = `Новый заказ от ${fullName}:\n`;
         let totalPrice = 0;
         cart.forEach(item => {
             message += `${item.name} - ${item.price} руб.\n`;
             totalPrice += item.price;
         });
-        message += `Итого: ${totalPrice} руб.\nНомер заказа: ${orderCode}`;
+        message += `Итого: ${totalPrice} руб.`;
 
-        // Токен вашего бота и chat_id
         const botToken = "7781582767:AAEQG3g51dGUIlp5kN45gGbX-CeV5s5yemU";
         const chatId = "1205843084";
 
-        // Отправляем сообщение через Telegram Bot API
         fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
             method: 'POST',
             headers: {
@@ -278,19 +438,28 @@
 
     // Обработчики событий
     document.querySelectorAll('.Menu_types').forEach(item => {
-        item.addEventListener('click', () => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
             const productName = item.getAttribute('data-name');
             const productPrice = item.getAttribute('data-price');
             addToCart(productName, productPrice);
+            
+            // Анимация нажатия
+            item.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                item.style.transform = 'scale(1)';
+            }, 100);
         });
     });
 
-    document.getElementById('send-order').addEventListener('click', () => {
+    document.getElementById('send-order').addEventListener('click', (e) => {
+        e.preventDefault();
         sendOrder();
     });
 
     // Открытие корзины при клике на значок
-    document.getElementById('cart-icon').addEventListener('click', () => {
+    document.getElementById('cart-icon').addEventListener('click', (e) => {
+        e.preventDefault();
         const cartDiv = document.getElementById('cart');
         cartDiv.classList.toggle('open');
     });
@@ -298,6 +467,7 @@
     // Удаление товаров из корзины (делегирование событий)
     document.addEventListener('click', (e) => {
         if (e.target.classList.contains('remove-item')) {
+            e.preventDefault();
             const index = parseInt(e.target.getAttribute('data-index'));
             removeItem(index);
         }
