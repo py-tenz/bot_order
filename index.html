@@ -312,6 +312,11 @@
     }
 
     let cart = [];
+    
+    // Функция для генерации 6-значного номера заказа
+    function generateOrderNumber() {
+        return Math.floor(100000 + Math.random() * 900000);
+    }
 
     // Функция для добавления продукта в корзину
     function addToCart(productName, productPrice) {
@@ -378,11 +383,14 @@
             return;
         }
 
+        const orderNumber = generateOrderNumber(); // Генерируем номер заказа
+        
         if (tg) {
             // Если в Telegram - отправляем данные через WebApp
             const orderData = {
                 items: cart,
                 total: cart.reduce((sum, item) => sum + item.price, 0),
+                orderNumber: orderNumber,
                 timestamp: new Date().toISOString()
             };
             
@@ -396,21 +404,25 @@
                 return;
             }
 
-            sendOrderToTelegram(fullName);
+            sendOrderToTelegram(fullName, orderNumber);
+            
+            // Показываем пользователю номер его заказа
+            alert(`Ваш заказ №${orderNumber} успешно оформлен!`);
+            
             cart = [];
             updateCart();
         }
     }
 
     // Функция для отправки заказа в Telegram (для браузера)
-    function sendOrderToTelegram(fullName) {
-        let message = `Новый заказ от ${fullName}:\n`;
+    function sendOrderToTelegram(fullName, orderNumber) {
+        let message = `Новый заказ #${orderNumber} от ${fullName}:\n\n`;
         let totalPrice = 0;
         cart.forEach(item => {
-            message += `${item.name} - ${item.price} руб.\n`;
+            message += `• ${item.name} - ${item.price} руб.\n`;
             totalPrice += item.price;
         });
-        message += `Итого: ${totalPrice} руб.`;
+        message += `\nИтого: ${totalPrice} руб.\n\nНомер заказа: ${orderNumber}`;
 
         const botToken = "7781582767:AAEQG3g51dGUIlp5kN45gGbX-CeV5s5yemU";
         const chatId = "1205843084";
