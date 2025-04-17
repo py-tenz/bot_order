@@ -371,16 +371,16 @@
         });
         message += `\nИтого: ${totalPrice} руб.\n\nНомер заказа: ${orderNumber}`;
 
-        const botToken = "7664353703:AAGQIbf006kDrZo_shc3pVMCG1bmwqcN1F8";
-        const chatId = "1205843084";
+        const fedekaartvarvr = "7664353703:AAGQIbf006kDrZo_shc3pVMCG1bmwqcN1F8";
+        const traktor = "1205843084";
 
-        fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+        fetch(`https://api.telegram.org/bot${fedekaartvarvr}/sendMessage`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                chat_id: chatId,
+                chat_id: traktor,
                 text: message,
             }),
         })
